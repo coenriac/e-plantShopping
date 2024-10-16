@@ -8,18 +8,45 @@ const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {};
+  const calculateTotalAmount = () => {
+    return cart
+      .reduce((total, item) => {
+        const costValue = parseFloat(item.cost.replace('$', '')); // Remove $ symbol and convert to number
+        return total + costValue * item.quantity;
+      }, 0)
+      .toFixed(2); // Return total cost with 2 decimal places
+  };
 
-  const handleContinueShopping = (e) => {};
+  const handleContinueShopping = (e) => {
+    e.preventDefault();
+    onContinueShopping(); // Calls the parent function to navigate back to the product listing page
+  };
 
-  const handleIncrement = (item) => {};
+  const handleCheckoutShopping = (e) => {
+    alert('Functionality to be added for future reference');
+  };
 
-  const handleDecrement = (item) => {};
+  const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+  };
 
-  const handleRemove = (item) => {};
+  const handleDecrement = (item) => {
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name)); // Remove item from cart if quantity goes to 0
+    }
+  };
+
+  const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
+  };
 
   // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {};
+  const calculateTotalCost = (item) => {
+    const costValue = parseFloat(item.cost.replace('$', ''));
+    return (costValue * item.quantity).toFixed(2);
+  };
 
   return (
     <div className="cart-container">
