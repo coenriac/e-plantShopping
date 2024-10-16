@@ -3,6 +3,8 @@ import "./ProductList.css";
 import CartItem from "./CartItem";
 import { useDispatch } from "react-redux"; // Import useDispatch to dispatch actions to the store
 import { addItem } from "./CartSlice"; // Import addItem from CartSlice for adding items to the cart
+import { removeItem, updateQuantity } from './CartSlice';
+
 
 function ProductList() {
   const [showCart, setShowCart] = useState(false);
@@ -17,6 +19,22 @@ function ProductList() {
       ...prevState,
       [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
     }));
+  };
+
+  const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
+  };
+
+  const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+  };
+
+  const handleDecrement = (item) => {
+    if (item.quantity > 1) {
+      dispatch(
+        updateQuantity({ name: item.name, quantity: item.quantity - 1 })
+      );
+    }
   };
 
   const plantsArray = [
