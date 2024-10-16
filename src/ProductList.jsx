@@ -11,7 +11,10 @@ function ProductList() {
 
   // Access cart from Redux store to calculate total items in cart
   const cart = useSelector((state) => state.cart.items);
-  const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
+  const totalItemsInCart = cart.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   const dispatch = useDispatch(); // Initialize useDispatch for dispatching actions
 
@@ -160,12 +163,11 @@ function ProductList() {
             </a>
           </div>
           <div>
-            <a href="#" onClick={handleCartClick} style={styleA}>
+            <a href="#" onClick={(e) => handleCartClick(e)} className="cart">
               <h1 className="cart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 256 256"
-                  id="IconChangeColor"
                   height="68"
                   width="68"
                 >
@@ -176,13 +178,11 @@ function ProductList() {
                     d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8"
                     fill="none"
                     stroke="#faf9f9"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    id="mainIconPathAttribute"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
                   ></path>
                 </svg>
-                {/* Display the total number of items in the cart */}
                 {totalItemsInCart > 0 && (
                   <span className="cart-count">{totalItemsInCart}</span>
                 )}

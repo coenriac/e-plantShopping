@@ -258,3 +258,20 @@ body {
     opacity: 0.6; /* Optional: lower opacity */
   }
   
+  .cart {
+    position: relative; /* Make the cart icon a reference for absolute positioning */
+    display: inline-block; /* Ensure the cart icon behaves like an inline element */
+  }
+  
+  .cart-count {
+    position: absolute;
+    top: 32px; /* Align the counter vertically at the top */
+    right: 35px; /* Align the counter horizontally at the right */
+    background-color: red; /* Make the counter more visible */
+    color: white;
+    border-radius: 50%; /* Make the counter a circle */
+    padding: 2px 6px; /* Adjust padding for counter size */
+    font-size: 16px; /* Adjust font size */
+    transform: translate(50%, -50%); /* Center the counter over the cart icon */
+  }
+  
