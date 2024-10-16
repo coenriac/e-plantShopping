@@ -250,3 +250,11 @@ body {
         text-align: center; /* Align text to the center */
       }
   }
+
+  .product-button:disabled {
+    background-color: #ccc; /* Gray out the button */
+    color: #666; /* Change text color */
+    cursor: not-allowed; /* Change the cursor to indicate it's disabled */
+    opacity: 0.6; /* Optional: lower opacity */
+  }
+  

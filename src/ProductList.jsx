@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
-import { useSelector, useDispatch } from "react-redux"; // Import useSelector and useDispatch
-import { addItem, removeItem, updateQuantity } from "./CartSlice"; // Combine imports
+import { useDispatch, useSelector } from "react-redux"; // Import useSelector to access the cart items in the store
+import { addItem } from "./CartSlice"; // Import addItem from CartSlice for adding items to the cart
 
 function ProductList() {
   const [showCart, setShowCart] = useState(false);
-  const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+  const [showPlants, setShowPlants] = useState(true); // Default to show the plant listing page
   const [addedToCart, setAddedToCart] = useState({});
 
-  // Get the cart items from Redux store
+  // Access cart from Redux store to calculate total items in cart
   const cart = useSelector((state) => state.cart.items);
-
-  // Calculate the total number of items in the cart
   const totalItemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
 
   const dispatch = useDispatch(); // Initialize useDispatch for dispatching actions
 
-  // Add item to the cart and update addedToCart state
   const handleAddToCart = (product) => {
     dispatch(addItem(product));
     setAddedToCart((prevState) => ({
@@ -26,23 +23,28 @@ function ProductList() {
     }));
   };
 
-  // Handle remove item from cart
-  const handleRemove = (item) => {
-    dispatch(removeItem(item.name));
+  // Function to show the cart
+  const handleCartClick = (e) => {
+    e.preventDefault();
+    setShowCart(true); // Set showCart to true when cart icon is clicked
+    setShowPlants(false); // Hide the product listing when cart is displayed
   };
 
-  // Increment quantity of an item
-  const handleIncrement = (item) => {
-    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+  // Function to show the product listing (Continue Shopping)
+  const handlePlantsClick = (e) => {
+    e.preventDefault();
+    setShowPlants(true); // Set showPlants to true when "Plants" link is clicked
+    setShowCart(false); // Hide the cart when navigating to product listing
   };
 
-  // Decrement quantity of an item
-  const handleDecrement = (item) => {
-    if (item.quantity > 1) {
-      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
-    }
+  // Function to continue shopping by hiding the cart and showing the product listing again
+  const handleContinueShopping = (e) => {
+    e.preventDefault();
+    setShowCart(false);
+    setShowPlants(true);
   };
 
+  // Array of plant categories and details
   const plantsArray = [
     {
       category: "Air Purifying Plants",
@@ -75,20 +77,6 @@ function ProductList() {
           description: "Adds humidity to the air and removes toxins.",
           cost: "$20",
         },
-        {
-          name: "Rubber Plant",
-          image:
-            "https://cdn.pixabay.com/photo/2020/02/15/11/49/flower-4850729_1280.jpg",
-          description: "Easy to care for and effective at removing toxins.",
-          cost: "$17",
-        },
-        {
-          name: "Aloe Vera",
-          image:
-            "https://cdn.pixabay.com/photo/2018/04/02/07/42/leaf-3283175_1280.jpg",
-          description: "Purifies the air and has healing properties for skin.",
-          cost: "$14",
-        },
       ],
     },
     {
@@ -115,49 +103,37 @@ function ProductList() {
           description: "Invigorating scent, often used in cooking.",
           cost: "$15",
         },
-        // More plant objects...
+        {
+          name: "Mint",
+          image:
+            "https://cdn.pixabay.com/photo/2016/01/07/18/16/mint-1126282_1280.jpg",
+          description: "Refreshing aroma, used in teas and cooking.",
+          cost: "$12",
+        },
       ],
     },
-    // Additional plant categories...
   ];
 
+  // Style objects
   const styleObj = {
     backgroundColor: "#4CAF50",
     color: "#fff!important",
     padding: "15px",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignIems: "center",
     fontSize: "20px",
   };
-
   const styleObjUl = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     width: "1100px",
   };
-
   const styleA = {
     color: "white",
     fontSize: "30px",
     textDecoration: "none",
-  };
-
-  const handleCartClick = (e) => {
-    e.preventDefault();
-    setShowCart(true); // Set showCart to true when cart icon is clicked
-  };
-
-  const handlePlantsClick = (e) => {
-    e.preventDefault();
-    setShowPlants(true); // Set showPlants to true when "Plants" link is clicked
-    setShowCart(false); // Hide the cart when navigating to the plants
-  };
-
-  const handleContinueShopping = (e) => {
-    e.preventDefault();
-    setShowCart(false); // Go back to product listing
   };
 
   return (
@@ -179,14 +155,12 @@ function ProductList() {
         </div>
         <div style={styleObjUl}>
           <div>
-            {" "}
-            <a href="#" onClick={(e) => handlePlantsClick(e)} style={styleA}>
+            <a href="#" onClick={handlePlantsClick} style={styleA}>
               Plants
             </a>
           </div>
           <div>
-            {" "}
-            <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
+            <a href="#" onClick={handleCartClick} style={styleA}>
               <h1 className="cart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -202,12 +176,13 @@ function ProductList() {
                     d="M42.3,72H221.7l-26.4,92.4A15.9,15.9,0,0,1,179.9,176H84.1a15.9,15.9,0,0,1-15.4-11.6L32.5,37.8A8,8,0,0,0,24.8,32H8"
                     fill="none"
                     stroke="#faf9f9"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     id="mainIconPathAttribute"
                   ></path>
                 </svg>
+                {/* Display the total number of items in the cart */}
                 {totalItemsInCart > 0 && (
                   <span className="cart-count">{totalItemsInCart}</span>
                 )}
@@ -216,13 +191,12 @@ function ProductList() {
           </div>
         </div>
       </div>
+
       {!showCart ? (
         <div className="product-grid">
           {plantsArray.map((category, index) => (
             <div key={index}>
-              <h1>
-                <div>{category.category}</div>
-              </h1>
+              <h1>{category.category}</h1>
               <div className="product-list">
                 {category.plants.map((plant, plantIndex) => (
                   <div className="product-card" key={plantIndex}>
