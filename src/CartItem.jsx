@@ -11,7 +11,7 @@ const CartItem = ({ onContinueShopping }) => {
   const calculateTotalAmount = () => {
     return cart
       .reduce((total, item) => {
-        const costValue = parseFloat(item.cost.replace('$', '')); // Remove $ symbol and convert to number
+        const costValue = parseFloat(item.cost.replace("$", "")); // Remove $ symbol and convert to number
         return total + costValue * item.quantity;
       }, 0)
       .toFixed(2); // Return total cost with 2 decimal places
@@ -23,7 +23,7 @@ const CartItem = ({ onContinueShopping }) => {
   };
 
   const handleCheckoutShopping = (e) => {
-    alert('Functionality to be added for future reference');
+    alert("Functionality to be added for future reference");
   };
 
   const handleIncrement = (item) => {
@@ -32,7 +32,9 @@ const CartItem = ({ onContinueShopping }) => {
 
   const handleDecrement = (item) => {
     if (item.quantity > 1) {
-      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+      dispatch(
+        updateQuantity({ name: item.name, quantity: item.quantity - 1 })
+      );
     } else {
       dispatch(removeItem(item.name)); // Remove item from cart if quantity goes to 0
     }
@@ -42,10 +44,10 @@ const CartItem = ({ onContinueShopping }) => {
     dispatch(removeItem(item.name));
   };
 
-  // Calculate total cost based on quantity for an item
+  // Calculate total cost for each item
   const calculateTotalCost = (item) => {
-    const costValue = parseFloat(item.cost.replace('$', ''));
-    return (costValue * item.quantity).toFixed(2);
+    const cost = parseFloat(item.cost.replace("$", ""));
+    return (cost * item.quantity).toFixed(2);
   };
 
   return (
